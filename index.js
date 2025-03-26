@@ -1,12 +1,25 @@
+// document.cookie = "user_info=user1; path=/";
+
 const http = require('http');
+const { parse } = require('cookie');
 
 const host = 'localhost';
 const port = 8000;
 
 const server = http.createServer((req, res) => {
-    // Replace this code by your own
-    res.writeHead(200);
-    res.end('Hello from Server!!!!');
+    const cookies = parse(req.headers.cookie || '');
+    if (cookies.user_info === 'user1') {
+        const userData = {
+            id: 1,
+            firstName: "Leanne",
+            lastName: "Graham"
+        };
+        res.writeHead(200);
+        res.end(JSON.stringify(userData));
+    } else {
+        res.writeHead(200);
+        res.end(JSON.stringify({}));
+    }
 });
 
 server.listen(port, host, () => {
